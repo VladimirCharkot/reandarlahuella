@@ -7,11 +7,12 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'base': ['Courier New', 'sans-serif'],
+      }, 
       backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-      },
+        'tapa': "url('/tapa.png')"
+      }
     },
   },
   plugins: [],
