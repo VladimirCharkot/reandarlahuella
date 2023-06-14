@@ -23,7 +23,7 @@ export default function Home() {
           onClick={() => {
             console.log('ndakjnsdkjan')
             window.scrollTo({
-              top: document.querySelector('.descarga')!.getBoundingClientRect().top,
+              top: document.querySelector('.portada')!.getBoundingClientRect().height ,
               left: 0,
               behavior: "smooth"
             })
@@ -41,7 +41,7 @@ export default function Home() {
 
         <div className='grid lg:grid-cols-2 md:grid-cols-1 m-2 md:m-12'>
 
-          <div className='text-center'>
+          <div className='text-center mt-12'>
 
             <h3 className='text-2xl text-center text-orange-300'>Desde Argentina</h3>
 
