@@ -78,7 +78,7 @@ const acciones = {
 
 
 
-export const procesarPago = async (req: Request) => {
+const procesarPago = async (req: Request) => {
 
   try{
     const body = await req.json() 

@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import { acciones, Status } from '../pagos/route';
 
-
-export const webhook = async (req: Request) => {
+const POST = async (req: Request) => {
 
   console.log('Recibiendo POST en /webhook...');
 
