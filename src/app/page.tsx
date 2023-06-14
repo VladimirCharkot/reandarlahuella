@@ -36,7 +36,7 @@ export default function Home() {
 
       <div className='descarga min-h-screen my-10 p-6 md:p-24'>
         <h2 className='text-xl md:text-4xl text-white'>Descarga oficial</h2>
-        <h3 className='text-lg md:text-2xl text-orange-300'>Re-andar la huella - Caminos de investigación en Malabar</h3>
+        <h3 className='text-lg md:text-2xl text-orange-300'>Re-andar la huella</h3>
         <p>Se ofrece aquí el texto en pdf para descarga junto a la posibilidad de colaborar</p>
 
         <div className='grid lg:grid-cols-2 md:grid-cols-1 m-2 md:m-12'>
