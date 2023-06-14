@@ -19,7 +19,7 @@ export default function Home() {
       <div className='portada relative bg-tapa bg-[length:auto_65vh] bg-right md:bg-contain md:bg-center bg-no-repeat min-h-screen p-6 md:p-24'>
         <h1 className='text-xl md:text-4xl text-white mt-6'>RE-ANDAR LA HUELLA</h1>
         <h2 className='text-lg md:text-2xl text-orange-300 mt-1 md:mt-4'>Caminos de investigación en Malabar</h2>
-        <p className='group absolute text-xl md:text-2xl text-orange-300 hover:underline hover:font-black cursor-pointer bottom-24 mb-24'
+        <p className='group absolute text-xl md:text-2xl text-orange-300 hover:underline hover:font-black cursor-pointer bottom-6 mb-12 md:bottom-24 md:mb-24'
           onClick={() => {
             console.log('ndakjnsdkjan')
             window.scrollTo({
@@ -31,7 +31,7 @@ export default function Home() {
             Descargar
           <span className='group-hover:text-white'> -&gt;</span>
         </p>
-        <h2 className='absolute text-lg md:text-2xl text-orange-300 bottom-0 mb-24'>Sebastián Rojo</h2>
+        <h2 className='absolute text-lg md:text-2xl text-orange-300 bottom-0 mb-6 md:mb-24'>Sebastián Rojo</h2>
       </div>
 
       <div className='descarga min-h-screen my-10 p-6 md:p-24'>
