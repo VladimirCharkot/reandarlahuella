@@ -14,27 +14,27 @@ export default function Home() {
   const [nan, setNan] = useState(false)
 
   return (
-    <main className="font-base bg-black flex min-h-screen flex-col text-white">
+    <main className="text-xs md:text-base font-base bg-black flex min-h-screen flex-col text-white">
 
-      <div className='relative bg-tapa bg-contain bg-center bg-no-repeat min-h-screen p-24'>
-        <h1 className='text-4xl text-white'>RE-ANDAR LA HUELLA</h1>
-        <h2 className='text-2xl text-orange-300'>Caminos de investigación en Malabar</h2>
+      <div className='relative bg-tapa bg-contain bg-center bg-no-repeat min-h-screen p-6 md:p-24'>
+        <h1 className='text-xl md:text-4xl text-white mt-6'>RE-ANDAR LA HUELLA</h1>
+        <h2 className='text-lg md:text-2xl text-orange-300 mt-1 md:mt-4'>Caminos de investigación en Malabar</h2>
         <p onClick={() => window.scrollBy({
                 top: 1000,
                 left: 0,
                 behavior: "smooth"
-              })} className='group absolute text-2xl text-orange-300 hover:underline hover:font-black cursor-pointer bottom-24 mb-24'>Descargar
+              })} className='group absolute text-xl md:text-2xl text-orange-300 hover:underline hover:font-black cursor-pointer bottom-24 mb-24'>Descargar
           <span className='group-hover:text-white'> -&gt;</span>
         </p>
-        <h2 className='absolute text-2xl text-orange-300 bottom-0 mb-24'>Sebastián Rojo</h2>
+        <h2 className='absolute text-lg md:text-2xl text-orange-300 bottom-0 mb-24'>Sebastián Rojo</h2>
       </div>
 
-      <div className='min-h-screen my-10 p-24'>
-        <h2 className='text-4xl text-white'>Descarga oficial</h2>
-        <h3 className='text-2xl text-orange-300'>Re-andar la huella - Caminos de investigación en Malabar</h3>
+      <div className='min-h-screen my-10 p-6 md:p-24'>
+        <h2 className='text-xl md:text-4xl text-white'>Descarga oficial</h2>
+        <h3 className='text-lg md:text-2xl text-orange-300'>Re-andar la huella - Caminos de investigación en Malabar</h3>
         <p>Se ofrece aquí el texto en pdf para descarga junto a la posibilidad de colaborar</p>
 
-        <div className='grid lg:grid-cols-2 md:grid-cols-1 m-12'>
+        <div className='grid lg:grid-cols-2 md:grid-cols-1 m-2 md:m-12'>
 
           <div className='text-center'>
 
