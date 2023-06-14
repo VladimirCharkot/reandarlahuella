@@ -16,20 +16,25 @@ export default function Home() {
   return (
     <main className="text-xs md:text-base font-base bg-black flex min-h-screen flex-col text-white">
 
-      <div className='relative bg-tapa bg-contain bg-center bg-no-repeat min-h-screen p-6 md:p-24'>
+      <div className='portada relative bg-tapa bg-[length:auto_65vh] bg-right md:bg-contain md:bg-center bg-no-repeat min-h-screen p-6 md:p-24'>
         <h1 className='text-xl md:text-4xl text-white mt-6'>RE-ANDAR LA HUELLA</h1>
         <h2 className='text-lg md:text-2xl text-orange-300 mt-1 md:mt-4'>Caminos de investigación en Malabar</h2>
-        <p onClick={() => window.scrollBy({
-                top: 1000,
-                left: 0,
-                behavior: "smooth"
-              })} className='group absolute text-xl md:text-2xl text-orange-300 hover:underline hover:font-black cursor-pointer bottom-24 mb-24'>Descargar
+        <p className='group absolute text-xl md:text-2xl text-orange-300 hover:underline hover:font-black cursor-pointer bottom-24 mb-24'
+          onClick={() => {
+            console.log('ndakjnsdkjan')
+            window.scrollTo({
+              top: document.querySelector('.descarga')!.getBoundingClientRect().top,
+              left: 0,
+              behavior: "smooth"
+            })
+          }} >
+            Descargar
           <span className='group-hover:text-white'> -&gt;</span>
         </p>
         <h2 className='absolute text-lg md:text-2xl text-orange-300 bottom-0 mb-24'>Sebastián Rojo</h2>
       </div>
 
-      <div className='min-h-screen my-10 p-6 md:p-24'>
+      <div className='descarga min-h-screen my-10 p-6 md:p-24'>
         <h2 className='text-xl md:text-4xl text-white'>Descarga oficial</h2>
         <h3 className='text-lg md:text-2xl text-orange-300'>Re-andar la huella - Caminos de investigación en Malabar</h3>
         <p>Se ofrece aquí el texto en pdf para descarga junto a la posibilidad de colaborar</p>
@@ -51,10 +56,10 @@ export default function Home() {
                 {nan && <p>Sólo números en monto</p>}
               </div>
               <button className='border m-5 p-5' onClick={async () => {
-                if(nombre == "" || mail == "" || monto == 0) {alert(`Por favor completar todos los datos`); return;}
+                if (nombre == "" || mail == "" || monto == 0) { alert(`Por favor completar todos los datos`); return; }
                 console.log(`Sending al server el coso este:`)
-                console.log({nombre, mail, monto})
-                const r = await fetch(`/mp/`, {method: 'POST', body: JSON.stringify({nombre, mail, monto}), headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }})
+                console.log({ nombre, mail, monto })
+                const r = await fetch(`/mp/`, { method: 'POST', body: JSON.stringify({ nombre, mail, monto }), headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' } })
                 const j = await r.json()
                 open(j.body.sandbox_init_point)
               }}>Ir a MercadoPago -&gt;</button>
@@ -73,7 +78,7 @@ export default function Home() {
 
             <div className='m-10'>
               <h4 className='text-xl text-orange-300'>Criptomonedas</h4>
-              <p>Transferir USDT por red <span className="text-xl font-bold">Ethereum</span> o <span className="text-xl font-bold">BNB Chain</span> a <span>0x517387e96e263f86fd1485a9547128a93c11cadb</span> </p>
+              <p>Transferir USDT por red <span className="text-xl font-bold">Ethereum</span> o <span className="text-xl font-bold">BNB Chain</span> a <span style={{ overflowWrap: 'anywhere' }}>0x517387e96e263f86fd1485a9547128a93c11cadb</span> </p>
             </div>
 
             <div className='m-10'>
