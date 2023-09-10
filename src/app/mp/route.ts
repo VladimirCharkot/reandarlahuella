@@ -84,7 +84,7 @@ export const POST = async (req: Request, res: Response) => {
 
   // Eco a pipedream
   const body = await req.json()
-  fetch('https://eoqadvsrz962xm4.m.pipedream.net', {method: 'POST', body: {...body, origen: 'Enviado desde @webhook'}})
+  fetch('https://eoqadvsrz962xm4.m.pipedream.net', {method: 'POST', body: JSON.stringify({...body, origen: 'Enviado desde @webhook'})})
   
   // Parseo query a mano
   // const query = fromPairs(req.url.split('?')[1].split('&').map(s => s.split('=')))
