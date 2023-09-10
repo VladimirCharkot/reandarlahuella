@@ -12,6 +12,7 @@ export default function Home() {
   const [nombre, setNombre] = useState("")
   const [mail, setMail] = useState("")
   const [nan, setNan] = useState(false)
+  const [verWU, setVerWU] = useState(false)
 
   return (
     <main className="text-xs md:text-base font-base bg-black flex min-h-screen flex-col text-white">
@@ -23,12 +24,12 @@ export default function Home() {
           onClick={() => {
             console.log('ndakjnsdkjan')
             window.scrollTo({
-              top: document.querySelector('.portada')!.getBoundingClientRect().height ,
+              top: document.querySelector('.portada')!.getBoundingClientRect().height,
               left: 0,
               behavior: "smooth"
             })
           }} >
-            Descargar
+          Descargar
           <span className='group-hover:text-white'> -&gt;</span>
         </p>
         <h2 className='absolute text-lg md:text-2xl text-orange-300 bottom-0 mb-6 md:mb-24'>Sebastián Rojo</h2>
@@ -51,7 +52,7 @@ export default function Home() {
               <div className='grid columns-2'>
                 <TxtInput nombre="nombre" valor={nombre} setValor={setNombre} />
                 <TxtInput nombre="mail" valor={mail} setValor={setMail} />
-                <label htmlFor="">Monto:</label>
+                <label className='mt-2' htmlFor="">Monto:</label>
                 <NumberInput value={monto} update={setMonto} setNaN={setNan} />
                 {nan && <p>Sólo números en monto</p>}
               </div>
@@ -59,7 +60,7 @@ export default function Home() {
                 if (nombre == "" || mail == "" || monto == 0) { alert(`Por favor completar todos los datos`); return; }
                 console.log(`Sending al server el coso este:`)
                 console.log({ nombre, mail, monto })
-                const r = await fetch(`/mp/`, { method: 'POST', body: JSON.stringify({ nombre, mail, monto }), headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' } })
+                const r = await fetch(`/mp/`, { method: 'PUT', body: JSON.stringify({ nombre, mail, monto }), headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' } })
                 const j = await r.json()
                 open(j.body.sandbox_init_point)
               }}>Ir a MercadoPago -&gt;</button>
@@ -78,18 +79,22 @@ export default function Home() {
 
             <div className='m-10'>
               <h4 className='text-xl text-orange-300'>Criptomonedas</h4>
-              <p>Transferir USDT por red <span className="text-xl font-bold">Ethereum</span> o <span className="text-xl font-bold">BNB Chain</span> a <span style={{ overflowWrap: 'anywhere' }}>0x517387e96e263f86fd1485a9547128a93c11cadb</span> </p>
+              <p>Transferir USDT por red <span className="text-xl font-bold">Ethereum</span> o <span className="text-xl font-bold">BNB Chain</span> a <span style={{ overflowWrap: 'anywhere' }}>0x0640b6c60Eda9BE0Ff83d4449DE53bBdE83B8c2b</span> </p>
+              <p>Dar aviso a bastianrojo@gmail.com</p>
             </div>
 
             <div className='m-10'>
               <h4 className='text-xl text-orange-300'>Western Union</h4>
-              <p>Enviar giro a </p>
-              <p className="font-bold">Sebastián Rojo</p>
-              <p className="font-bold">DNI 24.357.725</p>
-              <p className="font-bold">bastianrojo@gmail.com</p>
-              <p className="font-bold">+5493512116751</p>
-              <p className="font-bold">Córdoba, Argentina</p>
-              <p>Escribinos a ese mail o celular indicando monto, remitente y número de transferencia (MTCN)</p>
+              <button className='border m-5 p-5' onClick={() => { setVerWU(!verWU)}}>Ver datos para WU -&gt;</button>
+              {verWU && <>
+                <p>Enviar giro a </p>
+                <p className="font-bold">Sebastián Rojo</p>
+                <p className="font-bold">DNI 24.357.725</p>
+                <p className="font-bold">bastianrojo@gmail.com</p>
+                <p className="font-bold">+5493512116751</p>
+                <p className="font-bold">Córdoba, Argentina</p>
+                <p>Escribinos a ese mail o celular indicando monto, remitente y número de transferencia (MTCN)</p>
+              </>}
             </div>
 
           </div>
