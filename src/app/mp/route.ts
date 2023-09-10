@@ -62,7 +62,7 @@ export async function PUT(req: Request) {
 
 
 // Acciones a llevar a cabo sobre las planillas según status de la situación:
-export const acciones: Record<Status, any> = {
+const acciones: Record<Status, any> = {
   approved: async (data: any) => {
     console.log(`@webhoook approved`)
     bot.sendMessage(process.env.TG_CHAT_ID!, `Entró pago de $${data.monto} de ${data.nombre} (${data.email})`)
