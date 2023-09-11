@@ -11,8 +11,8 @@ const cache_pagos: Record<string, string> = {}
 console.log(`Bot polling: ${bot.isPolling()}`)
 
 try{
-  if (process.env.MP_TOKEN === undefined) throw new Error('Falta MP_TOKEN')
-  mercadopago.configurations.setAccessToken(process.env.MP_TOKEN!)
+  if (process.env.MP_ACCESSKEY === undefined) throw new Error('Falta MP_ACCESSKEY')
+  mercadopago.configurations.setAccessToken(process.env.MP_ACCESSKEY!)
   console.log('MercadoPago configurado')
 }catch(e){
   console.error('No se pudo configurar MercadoPago. Está el token en el archivo correspondiente (.mptoken)?')
