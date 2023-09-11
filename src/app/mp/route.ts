@@ -11,8 +11,8 @@ const cache_pagos: Record<string, string> = {}
 console.log(`Bot polling: ${bot.isPolling()}`)
 
 try{
-  if (process.env.MP_ACCESSKEY === undefined) throw new Error('Falta MP_ACCESSKEY')
-  mercadopago.configurations.setAccessToken(process.env.MP_ACCESSKEY!)
+  if (process.env.MP_ACCESS_TOKEN === undefined) throw new Error('Falta MP_ACCESS_TOKEN')
+  mercadopago.configurations.setAccessToken(process.env.MP_ACCESS_TOKEN!)
   console.log('MercadoPago configurado')
 }catch(e){
   console.error('No se pudo configurar MercadoPago. Está el token en el archivo correspondiente (.mptoken)?')
@@ -94,7 +94,7 @@ export const POST = async (req: Request, res: Response) => {
     console.log(body)
 
     // Acá nos enteramos del pago de las preferencias (o sea de checkoutpro)
-    let r = await fetch(body.resource, {headers: {'Authorization': `Bearer ${process.env.MP_TOKEN}`}});
+    let r = await fetch(body.resource, {headers: {'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}`}});
     const orden = await r.json();
     if(r.status != 200){
       console.error(`Error queryiando merchant_order: ${JSON.stringify(r)}`);
@@ -114,7 +114,7 @@ export const POST = async (req: Request, res: Response) => {
 
     console.log(`Buscando el pago en https://api.mercadolibre.com/collections/notifications/${orden.payments[0].id}`)
 
-    let r2 = await fetch(`https://api.mercadolibre.com/collections/notifications/${orden.payments[0].id}`, {headers: {'Authorization': `Bearer ${process.env.MP_TOKEN}`}});
+    let r2 = await fetch(`https://api.mercadolibre.com/collections/notifications/${orden.payments[0].id}`, {headers: {'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}`}});
     const pago = await r2.json();
     if(r2.status != 200){
       console.error(`Error queryiando pago: ${JSON.stringify(r2)}`);
