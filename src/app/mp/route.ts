@@ -12,7 +12,10 @@ console.log(`Bot polling: ${bot.isPolling()}`)
 
 try{
   if (process.env.MP_ACCESS_TOKEN === undefined) throw new Error('Falta MP_ACCESS_TOKEN')
-  mercadopago.configurations.setAccessToken(process.env.MP_ACCESS_TOKEN!)
+  mercadopago.configure({
+    access_token: process.env.MP_ACCESS_TOKEN!
+   })
+  // mercadopago.configurations
   console.log('MercadoPago configurado')
 }catch(e){
   console.error('No se pudo configurar MercadoPago. Está el token en el archivo correspondiente (.mptoken)?')
