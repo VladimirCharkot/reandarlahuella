@@ -1,11 +1,7 @@
 "use client"
-import { capitalize } from 'lodash'
-import Image from 'next/image'
 import TxtInput from '@/components/txtInput';
 import { NumberInput } from '@/components/numberInput';
 import { useState } from 'react';
-
-
 
 export default function Home() {
   const [monto, setMonto] = useState(0)
@@ -13,6 +9,7 @@ export default function Home() {
   const [mail, setMail] = useState("")
   const [nan, setNan] = useState(false)
   const [verWU, setVerWU] = useState(false)
+  const [status, setStatus] = useState('')
 
   return (
     <main className="text-xs md:text-base font-base bg-black flex min-h-screen flex-col text-white">
@@ -22,7 +19,6 @@ export default function Home() {
         <h2 className='text-lg md:text-2xl text-orange-300 mt-1 md:mt-4'>Caminos de investigación en Malabar</h2>
         <p className='group absolute text-xl md:text-2xl text-orange-300 hover:underline hover:font-black cursor-pointer bottom-6 mb-12 md:bottom-24 md:mb-24'
           onClick={() => {
-            console.log('ndakjnsdkjan')
             window.scrollTo({
               top: document.querySelector('.portada')!.getBoundingClientRect().height,
               left: 0,
@@ -58,12 +54,14 @@ export default function Home() {
               </div>
               <button className='border m-5 p-5' onClick={async () => {
                 if (nombre == "" || mail == "" || monto == 0) { alert(`Por favor completar todos los datos`); return; }
-                console.log(`Sending al server el coso este:`)
-                console.log({ nombre, mail, monto })
+                setStatus(`Creando link de pago por $${monto}...`)
                 const r = await fetch(`/mp/`, { method: 'PUT', body: JSON.stringify({ nombre, mail, monto }), headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' } })
                 const j = await r.json()
-                open(j.body.sandbox_init_point)
+                setStatus(`Redirigiendo...`)
+                open(j.body.init_point)
+                setTimeout(() => {setStatus('')}, 3000)
               }}>Ir a MercadoPago -&gt;</button>
+              <p>{status}</p>
             </div>
 
             {/* <div className='m-10'>

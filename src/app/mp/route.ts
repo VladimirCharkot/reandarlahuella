@@ -15,10 +15,9 @@ try{
   mercadopago.configure({
     access_token: process.env.MP_ACCESS_TOKEN!
    })
-  // mercadopago.configurations
   console.log('MercadoPago configurado')
 }catch(e){
-  console.error('No se pudo configurar MercadoPago. Está el token en el archivo correspondiente (.mptoken)?')
+  console.error('No se pudo configurar MercadoPago. Está el token en el archivo correspondiente?')
 }
 
 
@@ -26,8 +25,6 @@ export async function PUT(req: Request) {
 
   if(!req.body){ return NextResponse.json({msg: 'No hay body'}, { status: 400 }) }
   const { nombre, mail, monto } = await req.json()
-
-  //bot.sendMessage('', `${nombre} creó preferencia de monto $${monto}`)
   
   let preference = {
     additional_info: JSON.stringify({nombre, mail, monto}),
