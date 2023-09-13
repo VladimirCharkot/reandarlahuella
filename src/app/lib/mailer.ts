@@ -20,13 +20,15 @@ export class Emailer {
     });
   }
 
-  public sendEmail(mailOptions: MailOptions) {
+  public async sendEmail(mailOptions: MailOptions) {
     return this.transporter.sendMail(mailOptions);
   }
 
-  public enviarReandar(email: string, nombre: string) {
+  public async enviarReandar(email: string, nombre: string) {
     console.log(`Enviando mail a ${email}...`)
-    this.sendEmail(emailConReandarAdjunto(email, nombre));
+    const mailResponse = await this.sendEmail(emailConReandarAdjunto(email, nombre))
+    console.log(`mailResponse:`)
+    console.log(mailResponse)
   }
 }
 
@@ -39,6 +41,7 @@ const archivo = readFileSync( path.join(libDirectory, "reandar.pdf") )
 console.log(`...archivo cargado!`)
 
 export const emailConReandarAdjunto = (email: string, username: string) => {
+  console.log(`Creando mail para ${username} (${email})`)
   return {
     from: process.env.GMAIL_USER,
     to: email,
