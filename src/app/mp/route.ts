@@ -74,9 +74,7 @@ export async function DELETE(req: Request){
 const acciones: Record<Status, any> = {
   approved: async (data: any) => {
     console.log(`@webhoook approved`)
-    console.log(data)
     console.log(`${data.nombre} (${data.email}) envió un pago de $${data.monto} por MP`)
-    console.log(process.env.TG_CHAT_ID)
     await emailer.enviarReandar(data.email, data.nombre)
     console.log(`Mail enviado`)
     await bot.sendMessage(process.env.TG_CHAT_ID!, `${data.nombre} (${data.email}) envió un pago de $${data.monto} por MP`)
@@ -159,7 +157,7 @@ export const POST = async (req: Request, res: Response) => {
     console.log(`Ahora agregaría entrada privada con ${JSON.stringify({nombre: provisto.nombre, monto: pago.collection.transaction_amount, email: provisto.mail, dni: identificacion, medio: 'mercadopago'})}`);
 
     // Y appendeamos a la planilla correspondiente, según status del pago
-    acciones[pago.collection.status as Status]({
+    await acciones[pago.collection.status as Status]({
       nombre: provisto.nombre,
       monto: pago.collection.transaction_amount,
       email: provisto.mail,
