@@ -5,7 +5,10 @@ import { useState } from 'react';
 import { SelectRed } from '@/components/selectRed';
 
 export default function Home() {
-  const [monto, setMonto] = useState(0)
+  const [montoMP, setMontoMP] = useState(0)
+  const [montoWU, setMontoWU] = useState(0)
+  const [montoUSDT, setMontoUSDT] = useState(0)
+
   const [nombre, setNombre] = useState("")
   const [mail, setMail] = useState("")
   const [txn, setTxn] = useState("")
@@ -13,9 +16,11 @@ export default function Home() {
   const [pais, setPais] = useState("")
   const [red, setRed] = useState("")
   const [nan, setNan] = useState(false)
+
   const [verWU, setVerWU] = useState(false)
   const [verMP, setVerMP] = useState(false)
   const [verCriptos, setVerCriptos] = useState(false)
+
   const [statusMP, setStatusMP] = useState('')
   const [statusCripto, setStatusCripto] = useState('')
   const [statusWU, setStatusWU] = useState('')
@@ -63,13 +68,13 @@ export default function Home() {
                   <TxtInput nombre="nombre" valor={nombre} setValor={setNombre} />
                   <TxtInput nombre="mail" valor={mail} setValor={setMail} />
                   <label className='mt-2' htmlFor="">Monto (ARS):</label>
-                  <NumberInput value={monto} update={setMonto} setNaN={setNan} />
+                  <NumberInput value={montoMP} update={setMontoMP} setNaN={setNan} />
                   {nan && <p>Sólo números en monto</p>}
                 </div>
                 <button className='border m-5 p-5' onClick={async () => {
-                  if (nombre == "" || mail == "" || monto == 0) { alert(`Por favor completar todos los datos`); return; }
-                  setStatusMP(`Creando link de pago por $${monto}...`)
-                  const r = await fetch(`/mp/`, { method: 'PUT', body: JSON.stringify({ nombre, mail, monto }), headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' } })
+                  if (nombre == "" || mail == "" || montoMP == 0) { alert(`Por favor completar todos los datos`); return; }
+                  setStatusMP(`Creando link de pago por $${montoMP}...`)
+                  const r = await fetch(`/mp/`, { method: 'PUT', body: JSON.stringify({ nombre, mail, monto: montoMP }), headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' } })
                   const j = await r.json()
                   setStatusMP(`Redirigiendo...`)
                   open(j.body.init_point)
@@ -95,13 +100,13 @@ export default function Home() {
                   <TxtInput nombre="mail" valor={mail} setValor={setMail} />
                   <TxtInput nombre="numero o id de transacción" valor={txn} setValor={setTxn} />
                   <label htmlFor="">Monto (USDT):</label>
-                  <NumberInput value={monto} update={setMonto} setNaN={setNan} />
+                  <NumberInput value={montoUSDT} update={setMontoUSDT} setNaN={setNan} />
                   <SelectRed red={red} setRed={setRed} />
                 </div>
                 <button className='border m-5 p-5' onClick={async () => {
-                  if (nombre == "" || mail == "" || monto == 0 || red == '' || txn == '') { alert(`Por favor completar todos los datos`); return; }
+                  if (nombre == "" || mail == "" || montoUSDT == 0 || red == '' || txn == '') { alert(`Por favor completar todos los datos`); return; }
                   setStatusCripto(`Enviando información al servidor...`)
-                  const r = await fetch(`/cripto/`, { method: 'POST', body: JSON.stringify({ nombre, mail, monto, red, txn }), headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' } })
+                  const r = await fetch(`/cripto/`, { method: 'POST', body: JSON.stringify({ nombre, mail, monto: montoUSDT, red, txn }), headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' } })
                   const j = await r.json()
                   if(j.ok){
                     setStatusCripto(`Recibido! En breve te estaremos enviando un mail :) Gracias!`)
@@ -137,12 +142,12 @@ export default function Home() {
                   <TxtInput nombre="MTCN" valor={mtcn} setValor={setMtcn} />
                   <TxtInput nombre="país" valor={pais} setValor={setPais} />
                   <label htmlFor="">Monto (USD):</label>
-                  <NumberInput value={monto} update={setMonto} setNaN={setNan} />
+                  <NumberInput value={montoWU} update={setMontoWU} setNaN={setNan} />
                 </div>
                 <button className='border m-5 p-5' onClick={async () => {
-                  if (nombre == "" || mail == "" || monto == 0 || mtcn == '' || pais == '') { alert(`Por favor completar todos los datos`); return; }
+                  if (nombre == "" || mail == "" || montoWU == 0 || mtcn == '' || pais == '') { alert(`Por favor completar todos los datos`); return; }
                   setStatusWU(`Enviando información al servidor...`)
-                  const r = await fetch(`/wu/`, { method: 'POST', body: JSON.stringify({ nombre, mail, monto, mtcn, pais }), headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' } })
+                  const r = await fetch(`/wu/`, { method: 'POST', body: JSON.stringify({ nombre, mail, monto: montoWU, mtcn, pais }), headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' } })
                   const j = await r.json()
                   if(j.ok){
                     setStatusWU(`Recibido! En breve te estaremos enviando un mail :) Gracias!`)
