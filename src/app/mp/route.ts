@@ -73,10 +73,10 @@ const acciones: Record<Status, any> = {
     console.log(data)
     console.log(`${data.nombre} (${data.email}) envió un pago de $${data.monto} por MP`)
     console.log(process.env.TG_CHAT_ID)
-    await bot.sendMessage(process.env.TG_CHAT_ID!, `${data.nombre} (${data.email}) envió un pago de $${data.monto} por MP`)
-    console.log(`Tg enviado`)
     await emailer.enviarReandar(data.email, data.nombre)
     console.log(`Mail enviado`)
+    await bot.sendMessage(process.env.TG_CHAT_ID!, `${data.nombre} (${data.email}) envió un pago de $${data.monto} por MP`)
+    console.log(`Tg enviado`)
   },
   in_process: async (data: any) => {
     console.log(`@webhoook in_process`)
