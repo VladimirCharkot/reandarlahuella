@@ -3,6 +3,7 @@ import { fromPairs, pick } from 'lodash'
 import mercadopago from 'mercadopago'
 import {Currency} from 'mercadopago/shared/currency'
 import bot from '@/app/lib/tg'
+import { emailer } from '../lib/mailer'
 
 type Status = 'approved' | 'in_process' | 'rejected'
 const url_base = 'https://reandarlahuella.vercel.app'
@@ -60,20 +61,25 @@ export async function PUT(req: Request) {
 
 }
 
+export async function DELETE(req: Request){
+  acciones.approved({nombre: 'Vlad', email: 'vlad.chk@gmail.com', monto: 100})
+  return NextResponse.json({ok: true})
+}
 
 // Acciones a llevar a cabo sobre las planillas según status de la situación:
 const acciones: Record<Status, any> = {
   approved: async (data: any) => {
     console.log(`@webhoook approved`)
-    bot.sendMessage(process.env.TG_CHAT_ID!, `Entró pago de $${data.monto} de ${data.nombre} (${data.email})`)
+    bot.sendMessage(process.env.TG_CHAT_ID!, `${data.nombre} (${data.email}) envió un pago de $${data.monto} por MP`)
+    emailer.enviarReandar(data.email, data.nombre)
   },
   in_process: async (data: any) => {
     console.log(`@webhoook in_process`)
-    bot.sendMessage(process.env.TG_CHAT_ID!, `Entró pago de $${data.monto} de ${data.nombre} (${data.email})`)
+    bot.sendMessage(process.env.TG_CHAT_ID!, `Pago en proceso de $${data.monto} de ${data.nombre} (${data.email})`)
   },
   rejected: async (data: any) => {
     console.log(`@webhoook rejected`)
-    bot.sendMessage(process.env.TG_CHAT_ID!, `Entró pago de $${data.monto} de ${data.nombre} (${data.email})`)
+    bot.sendMessage(process.env.TG_CHAT_ID!, `Falló el pago de $${data.monto} de ${data.nombre} (${data.email})`)
   }
 }
 
