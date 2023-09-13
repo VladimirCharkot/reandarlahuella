@@ -22,6 +22,7 @@ export class Emailer {
   }
 
   public enviarReandar(email: string, nombre: string) {
+    console.log(`Enviando mail a ${email}...`)
     this.sendEmail(emailConReandarAdjunto(email, nombre));
   }
 }
@@ -30,10 +31,7 @@ export const emailer = new Emailer();
 
 console.log(`Cargando archivo...`)
 console.log(`Buscando en ${process.cwd()}...`)
-const dirr = readdirSync(process.cwd())
-console.log(dirr.join(', '))
 const libDirectory = path.resolve(process.cwd(), "src/app/lib")
-console.log(`LibDir en ${libDirectory}`)
 const archivo = readFileSync( path.join(libDirectory, "reandar.pdf") )
 console.log(`...archivo cargado!`)
 

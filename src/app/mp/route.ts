@@ -90,14 +90,21 @@ export const POST = async (req: Request, res: Response) => {
 
   // Eco a pipedream
   const body = await req.json()
-  fetch('https://eoqadvsrz962xm4.m.pipedream.net', {method: 'POST', body: JSON.stringify({...body, origen: 'Enviado desde @webhook'})})
+  try{
+    console.log('Reenviando a pipedream...');
+    console.log(JSON.stringify(body))
+    fetch('https://eoqadvsrz962xm4.m.pipedream.net', {method: 'POST', body: JSON.stringify({...body, origen: 'Enviado desde @webhook'})})
+  }catch(e: any){
+    console.log(`Error en eco:`)
+    console.log(e.message)
+  }
   
   // Parseo query a mano
   // const query = fromPairs(req.url.split('?')[1].split('&').map(s => s.split('=')))
 
   if(body.topic == 'merchant_order'){
     
-    console.log(body)
+    console.log('Procesando merchant order...');
 
     // Acá nos enteramos del pago de las preferencias (o sea de checkoutpro)
     let r = await fetch(body.resource, {headers: {'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}`}});
@@ -108,8 +115,7 @@ export const POST = async (req: Request, res: Response) => {
     }
 
     // Obtenemos la orden, que tiene la referencia a la preferencia
-    console.log('Entró una merchant order en webhook:');
-    console.log(JSON.stringify(orden));
+    console.log('Orden obtenida')
 
     if(orden.payments.length == 0){
       console.log('Todavia no hay info de pago disponible. Omitiendo.');
@@ -120,21 +126,20 @@ export const POST = async (req: Request, res: Response) => {
 
     console.log(`Buscando el pago en https://api.mercadolibre.com/collections/notifications/${orden.payments[0].id}`)
 
-    let r2 = await fetch(`https://api.mercadolibre.com/collections/notifications/${orden.payments[0].id}`, {headers: {'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}`}});
-    const pago = await r2.json();
+    let r2 = await fetch(`https://api.mercadolibre.com/collections/notifications/${orden.payments[0].id}`, {headers: {'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}`}})
+    const pago = await r2.json()
     if(r2.status != 200){
-      console.error(`Error queryiando pago: ${JSON.stringify(r2)}`);
-      return NextResponse.json({ok: false});
+      console.error(`Error queryiando pago: ${JSON.stringify(r2)}`)
+      return NextResponse.json({ok: false})
     }
     
-    console.log('El pago asociado es:');
-    console.log(JSON.stringify(pago));
+    console.log('Pago obtenido!')
 
     // No procesar si la caché lo tiene como aprobado o con el mismo status
     if (cache_pagos.hasOwnProperty(pago.collection.id) && 
     (cache_pagos[pago.collection.id] == 'approved' || cache_pagos[pago.collection.id] == pago.collection.status)) {
-      console.log('Pago ya procesado');
-      return NextResponse.json({ok: true});
+      console.log('Pago ya procesado')
+      return NextResponse.json({ok: true})
     }
 
     const identificacion = pago.collection.payer.identification.number ?? "NO_ENCONTRADO";
