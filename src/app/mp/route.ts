@@ -70,8 +70,10 @@ export async function DELETE(req: Request){
 const acciones: Record<Status, any> = {
   approved: async (data: any) => {
     console.log(`@webhoook approved`)
-    bot.sendMessage(process.env.TG_CHAT_ID!, `${data.nombre} (${data.email}) envió un pago de $${data.monto} por MP`)
-    emailer.enviarReandar(data.email, data.nombre)
+    await bot.sendMessage(process.env.TG_CHAT_ID!, `${data.nombre} (${data.email}) envió un pago de $${data.monto} por MP`)
+    console.log(`Tg enviado`)
+    await emailer.enviarReandar(data.email, data.nombre)
+    console.log(`Mail enviado`)
   },
   in_process: async (data: any) => {
     console.log(`@webhoook in_process`)
