@@ -62,7 +62,11 @@ export async function PUT(req: Request) {
 }
 
 export async function DELETE(req: Request){
-  acciones.approved({nombre: 'Vlad', email: 'vlad.chk@gmail.com', monto: 100})
+  console.log(`Enviando mail...`)
+  await emailer.enviarReandar('vlad.chk@gmail.com', 'Vladi')
+  console.log(`Enviando chat...`)
+  await bot.sendMessage(process.env.TG_CHAT_ID!, `Testeando`)
+  console.log(`Enviados!`)
   return NextResponse.json({ok: true})
 }
 

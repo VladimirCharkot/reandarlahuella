@@ -40,7 +40,7 @@ const libDirectory = path.resolve(process.cwd(), "src/app/lib")
 const archivo = readFileSync( path.join(libDirectory, "reandar.pdf") )
 console.log(`...archivo cargado!`)
 
-export const emailConReandarAdjunto = (email: string, username: string) => {
+const emailConReandarAdjunto = (email: string, username: string) => {
   console.log(`Creando mail para ${username} (${email})`)
   return {
     from: process.env.GMAIL_USER,
