@@ -2,6 +2,7 @@
 import { readFileSync } from "fs";
 import * as nodemailer from "nodemailer";
 import { MailOptions } from "nodemailer/lib/json-transport";
+import path from "path";
 
 export class Emailer {
   private readonly transporter: nodemailer.Transporter;
@@ -28,7 +29,10 @@ export class Emailer {
 export const emailer = new Emailer();
 
 console.log(`Cargando archivo...`)
-const archivo = readFileSync(process.env.PDF_LOCATION!)
+console.log(`Buscando en ${process.cwd()}`)
+const libDirectory = path.resolve(process.cwd(), "lib")
+console.log(`LibDir en ${libDirectory}`)
+const archivo = readFileSync( path.join(libDirectory, "reandar.pdf") )
 console.log(`...archivo cargado!`)
 
 export const emailConReandarAdjunto = (email: string, username: string) => {
