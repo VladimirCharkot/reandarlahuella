@@ -28,7 +28,7 @@ export class Emailer {
 export const emailer = new Emailer();
 
 console.log(`Cargando archivo...`)
-const archivo = readFileSync('src/app/lib/reandar.pdf')
+const archivo = readFileSync(process.env.PDF_LOCATION!)
 console.log(`...archivo cargado!`)
 
 export const emailConReandarAdjunto = (email: string, username: string) => {
