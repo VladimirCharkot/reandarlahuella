@@ -29,10 +29,10 @@ export default function Home() {
     <main className="text-xs md:text-base font-base bg-black flex min-h-screen flex-col text-white">
 
       <div className='portada relative bg-tapa bg-[length:auto_65vh] bg-right md:bg-contain md:bg-center bg-no-repeat min-h-screen p-6 md:p-24'>
-        <h1 className='bg-black w-max p-1 text-xl md:text-4xl text-white mt-6'>RE-ANDAR LA HUELLA</h1>
-        <h2 className='bg-black w-max p-1 text-lg md:text-2xl text-orange-300 mt-1 md:mt-4'>Caminos de investigación en Malabar</h2>
-        <h1 className='bg-black w-max p-1 text-xl md:text-4xl text-white mt-6'>VIDRIERA MENTAL</h1>
-        <h2 className='bg-black w-max p-1 text-lg md:text-2xl text-orange-300 mt-1 md:mt-4'>Una idea sobre el malabar</h2>
+        <h1 className='bg-black w-max p-1 text-lg md:text-4xl text-white mt-6'>RE-ANDAR LA HUELLA</h1>
+        <h2 className='bg-black w-max p-1 text-sm md:text-2xl text-orange-300 mt-1 md:mt-4'>Caminos de investigación en Malabar</h2>
+        <h1 className='bg-black w-max p-1 text-lg md:text-4xl text-white mt-6'>VIDRIERA MENTAL</h1>
+        <h2 className='bg-black w-max p-1 text-sm md:text-2xl text-orange-300 mt-1 md:mt-4'>Una idea sobre el malabar</h2>
         <p className='bg-black p-1 group absolute text-xl md:text-2xl text-orange-300 hover:underline hover:font-black cursor-pointer bottom-6 mb-12 md:bottom-24 md:mb-24'
           onClick={() => {
             window.scrollTo({
