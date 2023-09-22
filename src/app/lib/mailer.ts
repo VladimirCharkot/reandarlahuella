@@ -34,22 +34,31 @@ export class Emailer {
 
 export const emailer = new Emailer();
 
-console.log(`Cargando archivo...`)
+console.log(`Cargando archivos...`)
 console.log(`Buscando en ${process.cwd()}...`)
 const libDirectory = path.resolve(process.cwd(), "src/app/lib")
-const archivo = readFileSync( path.join(libDirectory, "reandar.pdf") )
-console.log(`...archivo cargado!`)
+const reandar = readFileSync( path.join(libDirectory, "reandar.pdf") )
+const vidriera = readFileSync( path.join(libDirectory, "vidriera.pdf") )
+console.log(`...archivos cargados!`)
 
 const emailConReandarAdjunto = (email: string, username: string) => {
   console.log(`Creando mail para ${username} (${email})`)
   return {
-    from: process.env.GMAIL_USER,
+    from: `Sebastián Rojo<${process.env.GMAIL_USER}>`,
     to: email,
-    subject: `${username}, acá está tu copia de Reandar la huella - Caminos de investigación en el malabar`,
-    text: "Muchas gracias por tu colaboración :)",
+    subject: `${username}, acá están tus copias de Reandar la huella y Vidriera mental`,
+    text: `
+Muchas gracias por tu colaboración!
+Sentite libre de continuar el intercambio o la conversación respondiendo a este mail con cualquier pregunta, comentario o disparador que veas, ahora o más adelante.
+
+Salud
+Gracias`,
     attachments: [{
-      filename: 'Reandar la huella - Caminos de investigación en el malabar.pdf',
-      content: archivo 
+      filename: 'Reandar la huella - Caminos de investigación en el malabar - Sebastián Rojo.pdf',
+      content: reandar
+    },{
+      filename: 'Vidriera mental - Una idea sobre malabarear - Sebastián Rojo.pdf',
+      content: vidriera
     }]
   } as MailOptions;
 }

@@ -29,9 +29,11 @@ export default function Home() {
     <main className="text-xs md:text-base font-base bg-black flex min-h-screen flex-col text-white">
 
       <div className='portada relative bg-tapa bg-[length:auto_65vh] bg-right md:bg-contain md:bg-center bg-no-repeat min-h-screen p-6 md:p-24'>
-        <h1 className='text-xl md:text-4xl text-white mt-6'>RE-ANDAR LA HUELLA</h1>
-        <h2 className='text-lg md:text-2xl text-orange-300 mt-1 md:mt-4'>Caminos de investigación en Malabar</h2>
-        <p className='group absolute text-xl md:text-2xl text-orange-300 hover:underline hover:font-black cursor-pointer bottom-6 mb-12 md:bottom-24 md:mb-24'
+        <h1 className='bg-black w-max p-1 text-xl md:text-4xl text-white mt-6'>RE-ANDAR LA HUELLA</h1>
+        <h2 className='bg-black w-max p-1 text-lg md:text-2xl text-orange-300 mt-1 md:mt-4'>Caminos de investigación en Malabar</h2>
+        <h1 className='bg-black w-max p-1 text-xl md:text-4xl text-white mt-6'>VIDRIERA MENTAL</h1>
+        <h2 className='bg-black w-max p-1 text-lg md:text-2xl text-orange-300 mt-1 md:mt-4'>Una idea sobre el malabar</h2>
+        <p className='bg-black p-1 group absolute text-xl md:text-2xl text-orange-300 hover:underline hover:font-black cursor-pointer bottom-6 mb-12 md:bottom-24 md:mb-24'
           onClick={() => {
             window.scrollTo({
               top: document.querySelector('.portada')!.getBoundingClientRect().height,
@@ -42,16 +44,17 @@ export default function Home() {
           Descargar
           <span className='group-hover:text-white'> -&gt;</span>
         </p>
-        <h2 className='absolute text-lg md:text-2xl text-orange-300 bottom-0 mb-6 md:mb-24'>Sebastián Rojo</h2>
+        <h2 className='bg-black p-1 absolute text-lg md:text-2xl text-orange-300 bottom-0 mb-6 md:mb-24'>Sebastián Rojo</h2>
       </div>
 
       <div className='descarga min-h-screen my-10 p-6 md:p-24'>
         <h2 className='text-xl md:text-4xl text-white'>Descarga oficial</h2>
-        <h3 className='text-lg md:text-2xl text-orange-300'>Re-andar la huella</h3>
+        <h3 className='text-lg md:text-2xl text-orange-300'>Re-andar la huella y Vidriera mental</h3>
 
-        <p className='p-2'>Envianos tu colaboración y recibí el pdf. No hay monto mínimo, pero recordá que con tu contribución estás valorando el resultado de años de dedicación e investigación.</p>
-        <p className='p-2'>Si transferís con MercadoPago el envío es automático. Si usás cripto o Western Union haremos el envío manual luego de verificar la transferencia. No te preocupes, no demora y tenemos las notificaciones encendidas :)</p>
-        <p className='p-2'>En cualquier caso en que hubieras efectuado el pago pero no hayas recibido el pdf, escribinos sin dilación a <span className='font-mono'>vlad.chk@gmail.com</span> con la info que dispongas de la transacción</p>
+        <p className='p-2'>Envianos tu colaboración y recibí los pdfs en tu mail. No hay monto mínimo, pero recordá que con tu contribución estás valorando el resultado de años de dedicación e investigación.</p>
+        <p className='p-2'>Si transferís con MercadoPago el envío es automático. Si usás cripto o Western Union haremos el envío manual luego de verificar la transferencia. No demora y tenemos las notificaciones encendidas :)</p>
+        <p className='p-2'>En cualquier caso en que hubieras efectuado el pago pero no hubieras recibido los pdfs, o por cualquier otra pregunta, consulta o comentario, escribinos sin dilación a <span className='font-mono'>elsilenciodondeescucho@gmail.com</span></p>
+        <p className='p-2'>Salud!</p>
 
         <div className='grid lg:grid-cols-2 md:grid-cols-1 m-2 md:m-12'>
 
