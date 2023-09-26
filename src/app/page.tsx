@@ -51,9 +51,9 @@ export default function Home() {
         <h2 className='text-xl md:text-4xl text-white'>Descarga oficial</h2>
         <h3 className='text-lg md:text-2xl text-orange-300'>Re-andar la huella y Vidriera mental</h3>
 
-        <p className='p-2'>Envianos tu colaboración y recibí los pdfs en tu mail. No hay monto mínimo, pero recordá que con tu contribución estás valorando el resultado de años de dedicación e investigación.</p>
-        <p className='p-2'>Si transferís con MercadoPago el envío es automático. Si usás cripto o Western Union haremos el envío manual luego de verificar la transferencia. No demora y tenemos las notificaciones encendidas :)</p>
-        <p className='p-2'>En cualquier caso en que hubieras efectuado el pago pero no hubieras recibido los pdfs, o por cualquier otra pregunta, consulta o comentario, escribinos sin dilación a <span className='font-mono'>elsilenciodondeescucho@gmail.com</span></p>
+        <p className='p-2'>Envíanos tu colaboración y recibe los pdfs en tu mail. Si bien no hay monto mínimo, recuerda que con tu contribución estás valorando el resultado de años de dedicación e investigación y apoyando el trabajo venidero.</p>
+        <p className='p-2'>Si transfieres con MercadoPago el envío es automático. Si usas cripto o Western Union haremos el envío manual luego de verificar la transferencia. Es muy veloz y tenemos las notificaciones encendidas :)</p>
+        <p className='p-2'>En caso de que efectuando el pago no recibieras los pdfs, o por cualquier otra pregunta, consulta o comentario, escríbenos de inmediato a <span className='font-mono'>elsilenciodondeescucho@gmail.com</span></p>
         <p className='p-2'>Salud!</p>
 
         <div className='grid lg:grid-cols-2 md:grid-cols-1 m-2 md:m-12'>

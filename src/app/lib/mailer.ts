@@ -47,12 +47,13 @@ const emailConReandarAdjunto = (email: string, username: string) => {
     from: `Sebastián Rojo<${process.env.GMAIL_USER}>`,
     to: email,
     subject: `${username}, acá están tus copias de Reandar la huella y Vidriera mental`,
-    text: `
-Muchas gracias por tu colaboración!
-Sentite libre de continuar el intercambio o la conversación respondiendo a este mail con cualquier pregunta, comentario o disparador que veas, ahora o más adelante.
+    text: `Hola. ¿Cómo estás?
+Muchas gracias por la colaboración y el interés en el trabajo. Confío sea de provecho, nutritivo.
+Eres libre de continuar el intercambio, o la comunicación según desees, respondiendo a este mail con cualquier pregunta, comentario o disparador que veas útil, ahora o más adelante.
+Quedo receptivo.
 
-Salud
-Gracias`,
+Salud. Gracias
+Sebastián Rojo`,
     attachments: [{
       filename: 'Reandar la huella - Caminos de investigación en el malabar - Sebastián Rojo.pdf',
       content: reandar
