@@ -94,6 +94,7 @@ const acciones: Record<Status, any> = {
 export const POST = async (req: Request, res: Response) => {
 
   console.log('Recibiendo POST en /webhook...');
+  const trace = []
 
   // Eco a pipedream
   const body = await req.json()
@@ -113,32 +114,35 @@ export const POST = async (req: Request, res: Response) => {
 
     if (body.topic == 'merchant_order') {
 
-      console.log('Procesando merchant order...');
+      trace.push('Procesando merchant order...');
 
       // Acá nos enteramos del pago de las preferencias (o sea de checkoutpro)
       let r = await fetch(body.resource, { headers: { 'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}` } });
       const orden = await r.json();
       if (r.status != 200) {
-        console.error(`Error queryiando merchant_order: ${JSON.stringify(r)}`);
+        trace.push(`Error queryiando merchant_order: ${JSON.stringify(r)}`);
+        fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
         return;
       }
 
       // Obtenemos la orden, que tiene la referencia a la preferencia
-      console.log('Orden obtenida')
+      trace.push('Orden obtenida')
 
       if (orden.payments.length == 0) {
-        console.log('Todavia no hay info de pago disponible. Omitiendo.');
+        trace.push('Todavia no hay info de pago disponible. Omitiendo.');
+        fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
         return NextResponse.json({ ok: false })
       }
 
       // Obtenemos el pago asociado
 
-      console.log(`Buscando el pago en https://api.mercadolibre.com/collections/notifications/${orden.payments[0].id}`)
+      trace.push(`Buscando el pago en https://api.mercadolibre.com/collections/notifications/${orden.payments[0].id}`)
 
       let r2 = await fetch(`https://api.mercadolibre.com/collections/notifications/${orden.payments[0].id}`, { headers: { 'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}` } })
       const pago = await r2.json()
       if (r2.status != 200) {
-        console.error(`Error queryiando pago: ${JSON.stringify(r2)}`)
+        trace.push(`Error queryiando pago: ${JSON.stringify(r2)}`)
+        fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
         return NextResponse.json({ ok: false })
       }
 
@@ -147,7 +151,8 @@ export const POST = async (req: Request, res: Response) => {
       // No procesar si la caché lo tiene como aprobado o con el mismo status
       if (cache_pagos.hasOwnProperty(pago.collection.id) &&
         (cache_pagos[pago.collection.id] == 'approved' || cache_pagos[pago.collection.id] == pago.collection.status)) {
-        console.log('Pago ya procesado')
+        trace.push('Pago ya procesado')
+        fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
         return NextResponse.json({ ok: true })
       }
 
@@ -155,8 +160,8 @@ export const POST = async (req: Request, res: Response) => {
 
       // Extraemos nuestros propios datos de la preferencia
       const provisto = JSON.parse(orden.additional_info);
-      console.log(`Ahora agregaría entrada pública con ${JSON.stringify({ nombre: provisto.nombre, monto: pago.collection.transaction_amount })}`);
-      console.log(`Ahora agregaría entrada privada con ${JSON.stringify({ nombre: provisto.nombre, monto: pago.collection.transaction_amount, email: provisto.mail, dni: identificacion, medio: 'mercadopago' })}`);
+      trace.push(`Obtenida información provista por el cliente`)
+      trace.push(provisto)
 
       // Y appendeamos a la planilla correspondiente, según status del pago
       await acciones[pago.collection.status as Status]({
@@ -168,9 +173,15 @@ export const POST = async (req: Request, res: Response) => {
         id: pago.collection.id
       })
 
+      trace.push(`Ejecutada acción ${pago.collection.status}`)
+
+      fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
+
       cache_pagos[pago.collection.id] = pago.collection.status;
     }
   } catch (e: any) {
+    trace.push(`Error en webhook: ${e.message}`)
+    fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
     await bot.sendMessage(process.env.TG_CHAT_ID!, `Error en webhook: ${e.message}
     Body: ${JSON.stringify(body)}`)
   }
