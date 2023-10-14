@@ -83,8 +83,8 @@ export default function Home() {
                   open(j.body.init_point)
                   setTimeout(() => { setStatusMP('') }, 3000)
                 }}>Ir a MercadoPago -&gt;</button>
-                <p>{statusMP}</p>
               </>}
+              <p>{statusMP}</p>
             </div>
 
           </div>
@@ -113,14 +113,20 @@ export default function Home() {
                   const j = await r.json()
                   if(j.ok){
                     setStatusCripto(`Recibido! En breve te estaremos enviando un mail :) Gracias!`)
+                    setNombre('')
+                    setMail('')
+                    setTxn('')
+                    setMontoUSDT(0)
+                    setRed('')
+                    setVerCriptos(false)
                   }else{
                     console.log(`El problema:`)
                     console.log(j.msg)
                     setStatusCripto(`Ups, hubo algún problema. Podés escribirnos la misma información a vlad.chk@gmail.com y te enviaremos el archivo de forma manual`)
                   }
                 }}>Hecho!</button>
-                <p>{statusCripto}</p>
               </>}
+              <p>{statusCripto}</p>
             </div>
 
             <div className='m-10'>
@@ -154,14 +160,19 @@ export default function Home() {
                   const j = await r.json()
                   if(j.ok){
                     setStatusWU(`Recibido! En breve te estaremos enviando un mail :) Gracias!`)
+                    setNombre('')
+                    setMail('')
+                    setMtcn('')
+                    setPais('')
+                    setVerWU(false)
                   }else{
                     console.log(`El problema:`)
                     console.log(j.msg)
                     setStatusWU(`Ups, hubo algún problema. Podés escribirnos la misma información a vlad.chk@gmail.com y te enviaremos el archivo de forma manual`)
                   }
                 }}>Hecho!</button>
-                <p>{statusWU}</p>
               </>}
+              <p>{statusWU}</p>
             </div>
 
           </div>
