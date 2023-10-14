@@ -6,7 +6,7 @@ import bot from '@/app/lib/tg'
 import { emailer } from '../lib/mailer'
 
 type Status = 'approved' | 'in_process' | 'rejected'
-const url_base = 'https://reandarlahuella.vercel.app'
+const url_base = 'https://reandarlahuella.com'
 const cache_pagos: Record<string, string> = {}
 
 console.log(`Bot polling: ${bot.isPolling()}`)
@@ -62,11 +62,8 @@ export async function PUT(req: Request) {
 }
 
 export async function DELETE(req: Request) {
-  console.log(`Enviando mail...`)
-  await emailer.enviarReandar('vlad.chk@gmail.com', 'Vladi')
-  console.log(`Enviando chat...`)
-  await bot.sendMessage(process.env.TG_CHAT_ID!, `Testeando`)
-  console.log(`Enviados!`)
+  emailer.enviarReandar('vlad.chk@gmail.com', 'Vladi').then(() => console.log(`Mail enviado`))
+  bot.sendMessage(process.env.TG_CHAT_ID!, `Testeando`).then(() => console.log(`Tg enviado`))
   return NextResponse.json({ ok: true })
 }
 
