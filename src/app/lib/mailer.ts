@@ -26,10 +26,7 @@ export class Emailer {
 
   public async enviarReandar(email: string, nombre: string) {
     console.log(`Enviando mail a ${email}...`)
-    this.sendEmail(emailConReandarAdjunto(email, nombre)).then(mailResponse => {
-      console.log(`mailResponse:`)
-      console.log(mailResponse)
-    })
+    return this.sendEmail(emailConReandarAdjunto(email, nombre))
   }
 }
 
