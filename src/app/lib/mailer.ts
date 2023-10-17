@@ -18,13 +18,20 @@ export class Emailer {
         pass: process.env.GMAIL_PASSWORD,
       },
     });
+    this.transporter.verify(function (error, success) {
+      if (error) {
+          console.log(error);
+      } else {
+          console.log("Server de mailing listo!");
+      }
+  });
   }
 
-  public async sendEmail(mailOptions: MailOptions) {
+  public sendEmail(mailOptions: MailOptions) {
     return this.transporter.sendMail(mailOptions);
   }
 
-  public async enviarReandar(email: string, nombre: string) {
+  public enviarReandar(email: string, nombre: string) {
     console.log(`Enviando mail a ${email}...`)
     return this.sendEmail(emailConReandarAdjunto(email, nombre))
   }
