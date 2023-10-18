@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server'
-import { fromPairs, pick } from 'lodash'
 import mercadopago from 'mercadopago'
 import { Currency } from 'mercadopago/shared/currency'
 import bot from '@/app/lib/tg'
-import { emailer } from '../lib/mailer'
+// import { emailer } from '../lib/mailer'
 
 type Status = 'approved' | 'in_process' | 'rejected'
 const url_base = 'https://reandarlahuella.com'
@@ -62,7 +61,7 @@ export async function PUT(req: Request) {
 }
 
 export async function DELETE(req: Request) {
-  emailer.enviarReandar('vlad.chk@gmail.com', 'Vladi').then(() => console.log(`Mail enviado`))
+  // emailer.enviarReandar('vlad.chk@gmail.com', 'Vladi').then(() => console.log(`Mail enviado`))
   bot.sendMessage(process.env.TG_CHAT_ID!, `Testeando`).then(() => console.log(`Tg enviado`))
   return NextResponse.json({ ok: true })
 }
@@ -72,10 +71,10 @@ const acciones: Record<Status, any> = {
   approved: async (data: any) => {
     console.log(`@webhoook approved`)
     console.log(`${data.nombre} (${data.email}) envió un pago de $${data.monto} por MP`)
-    emailer.enviarReandar(data.email, data.nombre).then(() => {
-      console.log(`Mail con adjunto enviado a ${data.email} (${data.nombre})!`)
-      bot.sendMessage(process.env.TG_CHAT_ID!, `Mail con adjunto enviado a ${data.email} (${data.nombre})!`)
-    })
+    // emailer.enviarReandar(data.email, data.nombre).then(() => {
+    //   console.log(`Mail con adjunto enviado a ${data.email} (${data.nombre})!`)
+    //   bot.sendMessage(process.env.TG_CHAT_ID!, `Mail con adjunto enviado a ${data.email} (${data.nombre})!`)
+    // })
     bot.sendMessage(process.env.TG_CHAT_ID!, `${data.nombre} (${data.email}) envió un pago de $${data.monto} por MP`)
       .then(() => console.log(`Tg enviado`))
   },
