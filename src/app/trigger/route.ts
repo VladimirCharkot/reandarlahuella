@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { emailer } from "../lib/mailer";
 import bot from "../lib/tg";
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export const POST = async (req: Request, res: Response) => {
   console.log('Recibiendo POST en /trigger...');
   const b = await req.json()
@@ -24,8 +27,8 @@ export const POST = async (req: Request, res: Response) => {
     //   console.log(`Reandar enviado`)
     //   bot.sendMessage(process.env.TG_CHAT_ID!, `Mail y pdfs enviados a ${b.nombre} (${b.mail})`)
     // })
-    return NextResponse.json({ok: true})
+    return NextResponse.json({ok: true, anticache: Math.random()})
   }else{
-    return NextResponse.json({ok: false, msg: `No autorizado c:`})
+    return NextResponse.json({ok: false, anticache: Math.random(), msg: `No autorizado c:`})
   }
 }
