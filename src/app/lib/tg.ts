@@ -9,10 +9,10 @@ const bot = new TelegramBot(token)
 
 console.log(`Inicializando bot...`)
 
-// bot.on('message', (msg) => {
-//   const chatId = msg.chat.id;
-//   bot.sendMessage(chatId, `@chatId ${chatId}: Received your message`);
-// });
+bot.on('message', (msg) => {
+  const chatId = msg.chat.id;
+  bot.sendMessage(chatId, `@chatId ${chatId}: Received your message`);
+});
 
 
 export default bot

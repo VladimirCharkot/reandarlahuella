@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import mercadopago from 'mercadopago'
 import { Currency } from 'mercadopago/shared/currency'
 import bot from '@/app/lib/tg'
-// import { emailer } from '../lib/mailer'
+import { enviarReandarYVidriera } from '../lib/sendgrid'
 
 type Status = 'approved' | 'in_process' | 'rejected'
 const url_base = 'https://reandarlahuella.com'
@@ -61,7 +61,7 @@ export async function PUT(req: Request) {
 }
 
 export async function DELETE(req: Request) {
-  // emailer.enviarReandar('vlad.chk@gmail.com', 'Vladi').then(() => console.log(`Mail enviado`))
+  enviarReandarYVidriera('vlad.chk@gmail.com', 'Vladi').then(() => console.log(`Mail enviado`))
   bot.sendMessage(process.env.TG_CHAT_ID!, `Testeando`).then(() => console.log(`Tg enviado`))
   return NextResponse.json({ ok: true })
 }
@@ -69,22 +69,14 @@ export async function DELETE(req: Request) {
 // Acciones a llevar a cabo sobre las planillas según status de la situación:
 const acciones: Record<Status, any> = {
   approved: async (data: any) => {
-    console.log(`@webhoook approved`)
-    console.log(`${data.nombre} (${data.email}) envió un pago de $${data.monto} por MP`)
-    // emailer.enviarReandar(data.email, data.nombre).then(() => {
-    //   console.log(`Mail con adjunto enviado a ${data.email} (${data.nombre})!`)
-    //   bot.sendMessage(process.env.TG_CHAT_ID!, `Mail con adjunto enviado a ${data.email} (${data.nombre})!`)
-    // })
-    bot.sendMessage(process.env.TG_CHAT_ID!, `${data.nombre} (${data.email}) envió un pago de $${data.monto} por MP`)
-      .then(() => console.log(`Tg enviado`))
+    await enviarReandarYVidriera(data.email, data.nombre)
+    await bot.sendMessage(process.env.TG_CHAT_ID!, `${data.nombre} (${data.email}) envió un pago de $${data.monto} por MP. Mail con adjunto enviado.`)
   },
   in_process: async (data: any) => {
-    console.log(`@webhoook in_process`)
-    bot.sendMessage(process.env.TG_CHAT_ID!, `Pago en proceso de $${data.monto} de ${data.nombre} (${data.email})`)
+    await bot.sendMessage(process.env.TG_CHAT_ID!, `Pago en proceso de $${data.monto} de ${data.nombre} (${data.email})`)
   },
   rejected: async (data: any) => {
-    console.log(`@webhoook rejected`)
-    bot.sendMessage(process.env.TG_CHAT_ID!, `Falló el pago de $${data.monto} de ${data.nombre} (${data.email})`)
+    await bot.sendMessage(process.env.TG_CHAT_ID!, `Falló el pago de $${data.monto} de ${data.nombre} (${data.email})`)
   }
 }
 

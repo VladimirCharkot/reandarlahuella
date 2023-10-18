@@ -13,15 +13,6 @@ export const POST = async (req: Request, res: Response) => {
     }catch(e){
       bot.sendMessage(process.env.TG_CHAT_ID!, `...falló envío a ${b.nombre} (${b.mail})! ${e}`)
     }
-      // .then(
-      //   r => {
-      //     console.log(`...mail enviado!`)
-      //     bot.sendMessage(process.env.TG_CHAT_ID!, `...enviado a ${b.nombre} (${b.mail})! ${r}`)
-      //   })
-      // .catch(e => {
-      //   console.log(`...falló envío!`)
-      //   bot.sendMessage(process.env.TG_CHAT_ID!, `...falló envío a ${b.nombre} (${b.mail})! ${e}`)
-      // })
     return NextResponse.json({ ok: true })
   } else {
     return NextResponse.json({ ok: false, msg: `No autorizado c:` })

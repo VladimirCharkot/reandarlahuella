@@ -5,6 +5,8 @@ import { MailOptions } from "nodemailer/lib/json-transport";
 import path from "path";
 import tgbot from '@/app/lib/tg'
 
+// Este script está cancelado porque funcionaba en dev pero no en vercel
+
 export class Emailer {
   private readonly transporter: nodemailer.Transporter;
 
