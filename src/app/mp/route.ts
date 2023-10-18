@@ -157,6 +157,7 @@ export const POST = async (req: Request, res: Response) => {
       const provisto = JSON.parse(orden.additional_info);
       log(`Obtenida información provista por el cliente`)
       log(provisto)
+      log(`El status es ${pago.collection.status}`)
 
       // Y appendeamos a la planilla correspondiente, según status del pago
       await acciones[pago.collection.status as Status]({

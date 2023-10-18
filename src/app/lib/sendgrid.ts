@@ -23,11 +23,11 @@ Sebastián Rojo`,
     attachments: [{
       content: reandar.toString('base64'),
       filename: 'Reandar la huella - Caminos de investigación en el malabar - Sebastián Rojo.pdf',
-      type: 'pdf'
+      type: 'application/pdf'
     },{
       content: vidriera.toString('base64'),
       filename: 'Vidriera mental - Una idea sobre malabarear - Sebastián Rojo.pdf',
-      type: 'pdf'
+      type: 'application/pdf'
     }
   ]
   }
