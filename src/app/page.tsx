@@ -67,6 +67,7 @@ export default function Home() {
               <button className='border m-5 p-5' onClick={() => { setVerMP(!verMP) }}>Usar MercadoPago -&gt;</button>
               {verMP && <><p>Cargá tu mail, nombre y monto para generar un link de pago</p>
                 <p>Al realizarse te enviaremos el pdf de manera automática al mail que hayas provisto :)</p>
+                <p>Puede demorar unos minutos</p>
                 <div className='grid columns-2'>
                   <TxtInput nombre="nombre" valor={nombre} setValor={setNombre} />
                   <TxtInput nombre="mail" valor={mail} setValor={setMail} />
