@@ -3,6 +3,7 @@ import { readFileSync, readdirSync } from "fs";
 import * as nodemailer from "nodemailer";
 import { MailOptions } from "nodemailer/lib/json-transport";
 import path from "path";
+import tgbot from '@/app/lib/tg'
 
 export class Emailer {
   private readonly transporter: nodemailer.Transporter;
@@ -20,8 +21,10 @@ export class Emailer {
     });
     this.transporter.verify(function (error, success) {
       if (error) {
+          tgbot.sendMessage(process.env.TG_CHAT_ID!, `Error en transporter.verify: ${error}`)
           console.log(error);
       } else {
+          tgbot.sendMessage(process.env.TG_CHAT_ID!, `transporter.verify exitoso: ${success}`)
           console.log("Server de mailing listo!");
       }
   });
