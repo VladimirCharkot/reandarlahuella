@@ -81,7 +81,12 @@ export default function Home() {
                   const j = await r.json()
                   setStatusMP(`Redirigiendo...`)
                   open(j.body.init_point)
-                  setTimeout(() => { setStatusMP('') }, 3000)
+                  setTimeout(() => { 
+                    setStatusMP('Gracias :)')
+                    setNombre('')
+                    setMail('')
+                    setMontoMP(0)
+                  }, 3000)
                 }}>Ir a MercadoPago -&gt;</button>
               </>}
               <p>{statusMP}</p>
