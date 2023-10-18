@@ -31,7 +31,7 @@ export class Emailer {
   }
 
   public sendEmail(mailOptions: MailOptions) {
-    tgbot.sendMessage(process.env.TG_CHAT_ID!, `@sendMail`)
+    // tgbot.sendMessage(process.env.TG_CHAT_ID!, `@sendMail`)
     return this.transporter.sendMail(mailOptions);
   }
 

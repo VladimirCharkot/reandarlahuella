@@ -9,6 +9,7 @@ export const POST = async (req: Request, res: Response) => {
     console.log(`Enviando mail...`)
     bot.sendMessage(process.env.TG_CHAT_ID!, `Enviando mails y pdfs a ${b.nombre} (${b.mail})`).then( () => console.log(`Mensaje enviado a Tg`) )
     const p = emailer.enviarReandar(b.mail, b.nombre)
+    bot.sendMessage(process.env.TG_CHAT_ID!, `${p}`)
     p
       .then(r => {
         bot.sendMessage(process.env.TG_CHAT_ID!, `Mail salió!`)
