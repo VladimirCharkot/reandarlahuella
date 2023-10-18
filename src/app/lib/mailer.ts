@@ -10,10 +10,11 @@ export class Emailer {
 
   constructor() {
     this.transporter = nodemailer.createTransport({
-      service: "gmail",
+      //service: "gmail",
       host: 'smtp.gmail.com',
       port: 465,
       secure: true,
+      // secureConnection: true,
       auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_PASSWORD,
