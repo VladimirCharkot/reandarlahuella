@@ -31,11 +31,12 @@ export class Emailer {
   }
 
   public sendEmail(mailOptions: MailOptions) {
+    tgbot.sendMessage(process.env.TG_CHAT_ID!, `@sendMail`)
     return this.transporter.sendMail(mailOptions);
   }
 
   public enviarReandar(email: string, nombre: string) {
-    console.log(`Enviando mail a ${email}...`)
+    tgbot.sendMessage(process.env.TG_CHAT_ID!, `@enviarReandar: ${email}, ${nombre}`)
     return this.sendEmail(emailConReandarAdjunto(email, nombre))
   }
 }
