@@ -91,19 +91,9 @@ export const POST = async (req: Request, res: Response) => {
     trace.push(txt)
   }
 
-  // Eco a pipedream
   const body = await req.json()
-  try {
-    log('Reenviando a pipedream...');
-    log(JSON.stringify(body))
-    fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ ...body, origen: 'Enviado desde @webhook' }) })
-  } catch (e: any) {
-    log(`Error en eco:`)
-    log(e.message)
-  }
-
-  // Parseo query a mano
-  // const query = fromPairs(req.url.split('?')[1].split('&').map(s => s.split('=')))
+  log('Logueando body...');
+  log(JSON.stringify(body))
 
   try {
 
@@ -116,8 +106,8 @@ export const POST = async (req: Request, res: Response) => {
       const orden = await r.json();
       if (r.status != 200) {
         log(`Error queryiando merchant_order: ${JSON.stringify(r)}`);
-        fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
-        return;
+        await fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
+        return NextResponse.json({ ok: false }, {status: 406});
       }
 
       // Obtenemos la orden, que tiene la referencia a la preferencia
@@ -125,8 +115,8 @@ export const POST = async (req: Request, res: Response) => {
 
       if (orden.payments.length == 0) {
         log('Todavia no hay info de pago disponible. Omitiendo.');
-        fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
-        return NextResponse.json({ ok: false })
+        await fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
+        return NextResponse.json({ ok: false }, {status: 406})
       }
 
       // Obtenemos el pago asociado
@@ -137,8 +127,8 @@ export const POST = async (req: Request, res: Response) => {
       const pago = await r2.json()
       if (r2.status != 200) {
         log(`Error queryiando pago: ${JSON.stringify(r2)}`)
-        fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
-        return NextResponse.json({ ok: false })
+        await fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
+        return NextResponse.json({ ok: false }, {status: 406})
       }
 
       console.log('Pago obtenido!')
@@ -147,8 +137,8 @@ export const POST = async (req: Request, res: Response) => {
       if (cache_pagos.hasOwnProperty(pago.collection.id) &&
         (cache_pagos[pago.collection.id] == 'approved' || cache_pagos[pago.collection.id] == pago.collection.status)) {
         log('Pago ya procesado')
-        fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
-        return NextResponse.json({ ok: true })
+        await fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
+        return NextResponse.json({ ok: true }, {status: 406})
       }
 
       const identificacion = pago.collection.payer.identification.number ?? "NO_ENCONTRADO";
@@ -159,7 +149,7 @@ export const POST = async (req: Request, res: Response) => {
       log(provisto)
       log(`El status es ${pago.collection.status}`)
 
-      // Y appendeamos a la planilla correspondiente, según status del pago
+      // Y ejecutamos la acción correspondiente, según status del pago
       await acciones[pago.collection.status as Status]({
         nombre: provisto.nombre,
         monto: pago.collection.transaction_amount,
@@ -170,17 +160,17 @@ export const POST = async (req: Request, res: Response) => {
       })
 
       log(`Ejecutada acción ${pago.collection.status}`)
-
-      fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
-
+      
       cache_pagos[pago.collection.id] = pago.collection.status;
+      
+      await fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
     }
   } catch (e: any) {
     log(`Error en webhook: ${e.message}`)
-    fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
+    await fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
     await bot.sendMessage(process.env.TG_CHAT_ID!, `Error en webhook: ${e.message}
     Body: ${JSON.stringify(body)}`)
   }
 
-  NextResponse.json({ ok: true }, { status: 200 })
+  return NextResponse.json({ ok: true }, { status: 200 })
 }
