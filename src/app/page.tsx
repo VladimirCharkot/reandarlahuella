@@ -8,7 +8,7 @@ export default function Home() {
   const [montoMP, setMontoMP] = useState(0)
   const [montoWU, setMontoWU] = useState(0)
   const [montoUSDT, setMontoUSDT] = useState(0)
-
+  
   const [nombre, setNombre] = useState("")
   const [mail, setMail] = useState("")
   const [txn, setTxn] = useState("")
@@ -16,12 +16,13 @@ export default function Home() {
   const [pais, setPais] = useState("")
   const [red, setRed] = useState("")
   const [nan, setNan] = useState(false)
-
+  
   const [verWU, setVerWU] = useState(false)
   const [verMP, setVerMP] = useState(false)
   const [verCriptos, setVerCriptos] = useState(false)
-
+  
   const [statusMP, setStatusMP] = useState('')
+  const [linkMP, setLinkMP] = useState("")
   const [statusCripto, setStatusCripto] = useState('')
   const [statusWU, setStatusWU] = useState('')
 
@@ -81,9 +82,10 @@ export default function Home() {
                   const r = await fetch(`/mp/`, { method: 'PUT', body: JSON.stringify({ nombre, mail, monto: montoMP }), headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' } })
                   const j = await r.json()
                   setStatusMP(`Redirigiendo...`)
+                  setLinkMP(j.body.init_point)
                   open(j.body.init_point)
                   setTimeout(() => { 
-                    setStatusMP('Gracias :)')
+                    setStatusMP('Si no sos redirigidx automáticamente, hacé click en el siguiente link. Gracias :)')
                     setNombre('')
                     setMail('')
                     setMontoMP(0)
@@ -91,6 +93,7 @@ export default function Home() {
                 }}>Ir a MercadoPago -&gt;</button>
               </>}
               <p>{statusMP}</p>
+              <a href={linkMP}>{linkMP}</a>
             </div>
 
           </div>

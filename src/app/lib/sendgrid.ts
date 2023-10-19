@@ -31,5 +31,6 @@ Sebastián Rojo`,
     }
   ]
   }
+  console.log(`Enviando a sendgrid...`)
   return sgMail.send(msg)
 }
