@@ -91,63 +91,58 @@ export const POST = async (req: Request, res: Response) => {
     trace.push(txt)
   }
 
+  const male_sal = async (msg: string) => {
+    log(msg);
+    log(`Devolviendo status HTTP 200`)
+    await fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
+    return NextResponse.json({ ok: false }, { status: 200 });
+  }
+
+  // Diálogo con MP:
+
   const body = await req.json()
-  log('Logueando body...');
+  log('Notificación recibida:');
   log(JSON.stringify(body))
 
   try {
 
     if (body.topic == 'merchant_order') {
 
-      log('Procesando merchant order...');
+      log('Es una merchant order. Consultando...');
 
       // Acá nos enteramos del pago de las preferencias (o sea de checkoutpro)
-      let r = await fetch(body.resource, { headers: { 'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}` } });
-      const orden = await r.json();
-      if (r.status != 200) {
-        log(`Error queryiando merchant_order: ${JSON.stringify(r)}`);
-        await fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
-        return NextResponse.json({ ok: false }, {status: 406});
-      }
+      let orden_response = await fetch(body.resource, { headers: { 'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}` } });
+      const orden = await orden_response.json();
+      if (orden_response.status != 200) { return await male_sal(`Error queryiando merchant_order: ${JSON.stringify(orden_response)}`) }
 
       // Obtenemos la orden, que tiene la referencia a la preferencia
-      log('Orden obtenida')
-
-      if (orden.payments.length == 0) {
-        log('Todavia no hay info de pago disponible. Omitiendo.');
-        await fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
-        return NextResponse.json({ ok: false }, {status: 406})
-      }
+      log('Orden obtenida:')
+      log(JSON.stringify(orden))
+      if (orden.payments.length == 0) { return await male_sal('Todavia no hay info de pago disponible. Omitiendo.'); }
 
       // Obtenemos el pago asociado
 
       log(`Buscando el pago en https://api.mercadolibre.com/collections/notifications/${orden.payments[0].id}`)
 
-      let r2 = await fetch(`https://api.mercadolibre.com/collections/notifications/${orden.payments[0].id}`, { headers: { 'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}` } })
-      const pago = await r2.json()
-      if (r2.status != 200) {
-        log(`Error queryiando pago: ${JSON.stringify(r2)}`)
-        await fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
-        return NextResponse.json({ ok: false }, {status: 406})
-      }
+      let pago_response = await fetch(`https://api.mercadolibre.com/collections/notifications/${orden.payments[0].id}`, { headers: { 'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}` } })
+      const pago = await pago_response.json()
+      if (pago_response.status != 200) { return await male_sal(`Error queryiando pago: ${JSON.stringify(pago)}`) }
 
-      console.log('Pago obtenido!')
+      log(`Pago obtenido. El status es ${pago.collection.status}:`)
+      log(JSON.stringify(pago))
 
-      // No procesar si la caché lo tiene como aprobado o con el mismo status
+      // No procesar si la caché lo tiene como aprobado o con el mismo status que este
       if (cache_pagos.hasOwnProperty(pago.collection.id) &&
         (cache_pagos[pago.collection.id] == 'approved' || cache_pagos[pago.collection.id] == pago.collection.status)) {
-        log('Pago ya procesado')
-        await fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
-        return NextResponse.json({ ok: true }, {status: 406})
+        return await male_sal(`Pago ${pago.collection.id} encontrado en cache con status ${pago.collection.status}`)
       }
 
       const identificacion = pago.collection.payer.identification.number ?? "NO_ENCONTRADO";
 
-      // Extraemos nuestros propios datos de la preferencia
+      // Extraemos nuestros propios datos de la **orden**
       const provisto = JSON.parse(orden.additional_info);
-      log(`Obtenida información provista por el cliente`)
+      log(`Obtenida información provista por el usuario:`)
       log(provisto)
-      log(`El status es ${pago.collection.status}`)
 
       // Y ejecutamos la acción correspondiente, según status del pago
       await acciones[pago.collection.status as Status]({
@@ -160,16 +155,17 @@ export const POST = async (req: Request, res: Response) => {
       })
 
       log(`Ejecutada acción ${pago.collection.status}`)
-      
+
       cache_pagos[pago.collection.id] = pago.collection.status;
-      
+
+      await bot.sendMessage(process.env.TG_CHAT_ID!, trace.join('\n'))
       await fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
     }
   } catch (e: any) {
     log(`Error en webhook: ${e.message}`)
+    await bot.sendMessage(process.env.TG_CHAT_ID!, `Error en webhook: ${e.message}\n\n
+    Body: ${JSON.stringify(body)}\n\nTrace:\n ${trace.join('\n')}`)
     await fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
-    await bot.sendMessage(process.env.TG_CHAT_ID!, `Error en webhook: ${e.message}
-    Body: ${JSON.stringify(body)}`)
   }
 
   return NextResponse.json({ ok: true }, { status: 200 })
