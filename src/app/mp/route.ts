@@ -142,7 +142,7 @@ export const POST = async (req: Request, res: Response) => {
       // Extraemos nuestros propios datos de la **orden**
       const provisto = JSON.parse(orden.additional_info);
       log(`Obtenida información provista por el usuario:`)
-      log(provisto)
+      log(JSON.stringify(provisto))
 
       // Y ejecutamos la acción correspondiente, según status del pago
       await acciones[pago.collection.status as Status]({
@@ -158,7 +158,9 @@ export const POST = async (req: Request, res: Response) => {
 
       cache_pagos[pago.collection.id] = pago.collection.status;
 
-      await bot.sendMessage(process.env.TG_CHAT_ID!, trace.join('\n'))
+      if(process.env.DEBUG){
+        await bot.sendMessage(process.env.TG_CHAT_ID!, trace.join('\n'))
+      }
       await fetch('https://eoqadvsrz962xm4.m.pipedream.net', { method: 'POST', body: JSON.stringify({ trace }) })
     }
   } catch (e: any) {
