@@ -13,9 +13,9 @@ export class Emailer {
   constructor() {
     this.transporter = nodemailer.createTransport({
       service: "gmail",
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
+      // host: 'smtp.gmail.com',
+      // port: 465,
+      // secure: true,
       // secureConnection: true,
       auth: {
         user: process.env.GMAIL_USER,
@@ -38,7 +38,7 @@ export class Emailer {
     return this.transporter.sendMail({...mailOptions});
   }
 
-  public enviarReandar(email: string, nombre: string) {
+  public enviarReandarYVidriera(email: string, nombre: string) {
     tgbot.sendMessage(process.env.TG_CHAT_ID!, `@enviarReandar: ${email}, ${nombre}`)
     return this.sendEmail(emailConReandarAdjunto(email, nombre))
   }
