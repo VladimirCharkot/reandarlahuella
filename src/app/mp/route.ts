@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server'
 import mercadopago from 'mercadopago'
 import { Currency } from 'mercadopago/shared/currency'
 import bot from '@/app/lib/tg'
-// import { enviarReandarYVidriera } from '../lib/sendgrid'
-import { emailer } from '../lib/mailer'
+import { enviarReandarYVidriera } from '../lib/sendgrid'
+// import { mailer } from '../lib/mailer'
 
 type Status = 'approved' | 'in_process' | 'rejected'
 const url_base = 'https://reandarlahuella.com'
@@ -62,7 +62,7 @@ export async function PUT(req: Request) {
 }
 
 export async function DELETE(req: Request) {
-  emailer.enviarReandarYVidriera('vlad.chk@gmail.com', 'Vladi').then(() => console.log(`Mail enviado`))
+  enviarReandarYVidriera('vlad.chk@gmail.com', 'Vladi').then(() => console.log(`Mail enviado`))
   bot.sendMessage(process.env.TG_CHAT_ID!, `Testeando`).then(() => console.log(`Tg enviado`))
   return NextResponse.json({ ok: true })
 }
@@ -70,7 +70,7 @@ export async function DELETE(req: Request) {
 // Acciones a llevar a cabo sobre las planillas según status de la situación:
 const acciones: Record<Status, any> = {
   approved: async (data: any) => {
-    await emailer.enviarReandarYVidriera(data.email, data.nombre)
+    await enviarReandarYVidriera(data.email, data.nombre)
     await bot.sendMessage(process.env.TG_CHAT_ID!, `${data.nombre} (${data.email}) envió un pago de $${data.monto} por MP. Mail con adjunto enviado.`)
   },
   in_process: async (data: any) => {
